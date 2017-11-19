@@ -26,10 +26,10 @@ class apache::mod::security (
   $secrequestbodyinmemorylimit = '131072',
   $manage_security_crs         = true,
   $headers_csp                 = "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self'; upgrade-insecure-requests; report-uri /csp/report.php",
-  $header_hsts                 = "max-age=16070400; includeSubDomains",
-  $header_xss_protection       = "1; mode=block",
-  $headers_refpolicy           = "origin",
-  $headers_expectct            = "max-age=0, report-uri,report-uri=\"https://foo.example/report\"",
+  $header_hsts                 = 'max-age=16070400; includeSubDomains',
+  $header_xss_protection       = '1; mode=block',
+  $headers_refpolicy           = 'origin',
+  $headers_expectct            = 'max-age=0, report-uri,report-uri="https://foo.example/report"',
 ) inherits ::apache::params {
   include ::apache
 
