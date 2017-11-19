@@ -1,0 +1,37 @@
+---
+driver:
+  name: docker
+## https://github.com/test-kitchen/kitchen-docker/issues/54
+  use_sudo: false
+## for systemd/centos7, https://github.com/docker/docker/issues/7459 = not enough
+#  privileged: true
+#  run_options: -e "container=docker" -v /sys/fs/cgroup:/sys/fs/cgroup
+
+transport:
+  name: sftp
+
+provisioner:
+  name: puppet_apply
+  manifest: site.pp
+  manifests_path: manifests
+  modules_path: modules
+#  hiera_data_path: hieradata
+#  hiera_config_path: hiera.yaml
+  resolve_with_librarian_puppet: false
+  custom_pre_apply_command: sudo /opt/puppetlabs/bin/puppet module install puppetlabs-stdlib --modulepath=/tmp/kitchen/modules; sudo /opt/puppetlabs/bin/puppet module install --modulepath=/tmp/kitchen/modules puppetlabs-concat
+  puppet_debug: false
+  puppet_verbose: true
+# required for test/integration...
+  require_chef_omnibus: true
+  require_chef_for_busser: true
+  enable_yum_epel: true
+
+platforms:
+  - name: ubuntu-16.04
+  - name: ubuntu-14.04
+  - name: centos-7
+
+suites:
+  - name: default
+  - name: default-ad-sso
+  - name: default-syslog
