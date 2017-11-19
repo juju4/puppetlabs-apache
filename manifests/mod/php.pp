@@ -8,6 +8,17 @@ class apache::mod::php (
   $source           = undef,
   $root_group       = $::apache::params::root_group,
   $php_version      = $::apache::params::php_version,
+  # php security settings
+  $php_expose_php   = 'Off',
+  $php_allow_url_fopen    = 'Off',
+  $php_disable_functions  = 'pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,chown,diskfreespace,disk_free_space,disk_total_space,dl,exec,escapeshellarg,escapeshellcmd,fileinode,highlight_file,max_execution_time,passthru,pclose,phpinfo,popen,proc_close,proc_open,proc_get_status,proc_nice,proc_open,proc_terminate,set_time_limit,shell_exec,show_source,system,serialize,unserialize,__construct, __destruct, __call,__wakeup',
+  $php_memory_limit       = '128M',
+  $php_include_path       = '/usr/share/php',
+  $php_session_use_strict_mode    = 1,
+  $php_session_cookie_secure      = true,
+  $php_session_cookie_httponly    = true,
+  $php_assert_active      = 'Off',
+  $php_file_uploads       = 'Off',
 ) inherits apache::params {
 
   include ::apache
@@ -90,5 +101,60 @@ class apache::mod::php (
     ],
     before  => File[$::apache::mod_dir],
     notify  => Class['apache::service'],
+  }
+
+  # Harden apache php.ini config
+  file { "${::php_ini}":
+    ensure => present,
+  }
+  file_line { 'php.ini: Configure expose_php':
+    path  => "${::php_ini}",
+    line  => "expose_php = ${::php_expose_php}",
+    match => '^expose_php = .*',
+  }
+  file_line { 'php.ini: Configure allow_url_fopen':
+    path  => "${::php_ini}",
+    line  => "allow_url_fopen = ${::php_allow_url_fopen}",
+    match => '^allow_url_fopen = .*',
+  }
+  file_line { 'php.ini: Configure disable_functions':
+    path  => "${::php_ini}",
+    line  => "disable_functions = ${::php_disable_functions}",
+    match => '^disable_functions =.*',
+  }
+  file_line { 'php.ini: Configure memory_limit':
+    path  => "${::php_ini}",
+    line  => "memory_limit = ${::php_memory_limit}",
+    match => '^memory_limit = .*',
+  }
+  file_line { 'php.ini: Configure include_path':
+    path  => "${::php_ini}",
+    line  => "include_path = ${::php_include_path}",
+    match => '^include_path = .*',
+  }
+  file_line { 'php.ini: Configure session.use_strict_mode':
+    path  => "${::php_ini}",
+    line  => "session.use_strict_mode = ${::php_session_use_strict_mode}",
+    match => '^session.use_strict_mode = .*',
+  }
+  file_line { 'php.ini: Configure session.cookie_secure':
+    path  => "${::php_ini}",
+    line  => "session.cookie_secure = ${::php_session_cookie_secure}",
+    match => '^session.cookie_secure = .*',
+  }
+  file_line { 'php.ini: Configure session.cookie_httponly':
+    path  => "${::php_ini}",
+    line  => "session.cookie_httponly = ${::php_session_cookie_httponly}",
+    match => '^session.cookie_httponly = .*',
+  }
+  file_line { 'php.ini: Configure assert.active':
+    path  => "${::php_ini}",
+    line  => "assert.active = ${::php_assert_active}",
+    match => '^assert.active = .*',
+  }
+  file_line { 'php.ini: Configure file_uploads':
+    path  => "${::php_ini}",
+    line  => "file_uploads = ${::php_file_uploads}",
+    match => '^file_uploads = .*',
   }
 }
