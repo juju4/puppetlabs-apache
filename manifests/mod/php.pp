@@ -104,57 +104,57 @@ class apache::mod::php (
   }
 
   # Harden apache php.ini config
-  file { "${::php_ini}":
+  file { "${apache::mod::php::php_ini}":
     ensure => present,
   }
   file_line { 'php.ini: Configure expose_php':
-    path  => "${::php_ini}",
-    line  => "expose_php = ${::php_expose_php}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "expose_php = ${apache::mod::php::php_expose_php}",
     match => '^expose_php = .*',
   }
   file_line { 'php.ini: Configure allow_url_fopen':
-    path  => "${::php_ini}",
-    line  => "allow_url_fopen = ${::php_allow_url_fopen}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "allow_url_fopen = ${apache::mod::php::php_allow_url_fopen}",
     match => '^allow_url_fopen = .*',
   }
   file_line { 'php.ini: Configure disable_functions':
-    path  => "${::php_ini}",
-    line  => "disable_functions = ${::php_disable_functions}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "disable_functions = ${apache::mod::php::php_disable_functions}",
     match => '^disable_functions =.*',
   }
   file_line { 'php.ini: Configure memory_limit':
-    path  => "${::php_ini}",
-    line  => "memory_limit = ${::php_memory_limit}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "memory_limit = ${apache::mod::php::php_memory_limit}",
     match => '^memory_limit = .*',
   }
   file_line { 'php.ini: Configure include_path':
-    path  => "${::php_ini}",
-    line  => "include_path = ${::php_include_path}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "include_path = ${apache::mod::php::php_include_path}",
     match => '^include_path = .*',
   }
   file_line { 'php.ini: Configure session.use_strict_mode':
-    path  => "${::php_ini}",
-    line  => "session.use_strict_mode = ${::php_session_use_strict_mode}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "session.use_strict_mode = ${apache::mod::php::php_session_use_strict_mode}",
     match => '^session.use_strict_mode = .*',
   }
   file_line { 'php.ini: Configure session.cookie_secure':
-    path  => "${::php_ini}",
-    line  => "session.cookie_secure = ${::php_session_cookie_secure}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "session.cookie_secure = ${apache::mod::php::php_session_cookie_secure}",
     match => '^session.cookie_secure = .*',
   }
   file_line { 'php.ini: Configure session.cookie_httponly':
-    path  => "${::php_ini}",
-    line  => "session.cookie_httponly = ${::php_session_cookie_httponly}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "session.cookie_httponly = ${apache::mod::php::php_session_cookie_httponly}",
     match => '^session.cookie_httponly = .*',
   }
   file_line { 'php.ini: Configure assert.active':
-    path  => "${::php_ini}",
-    line  => "assert.active = ${::php_assert_active}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "assert.active = ${apache::mod::php::php_assert_active}",
     match => '^assert.active = .*',
   }
   file_line { 'php.ini: Configure file_uploads':
-    path  => "${::php_ini}",
-    line  => "file_uploads = ${::php_file_uploads}",
+    path  => "${apache::mod::php::php_ini}",
+    line  => "file_uploads = ${apache::mod::php::php_file_uploads}",
     match => '^file_uploads = .*',
   }
 }
