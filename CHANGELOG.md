@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
+## Unreleased
+- enforce modern crypto ciphers and protocol
+- define HTTP security headers
+
 ## Supported Release [2.3.0]
 ### Summary
 This is a feature release. It includes a task that will reload the apache service.
