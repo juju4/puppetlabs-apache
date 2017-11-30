@@ -9,6 +9,7 @@ class apache::mod::php (
   $root_group       = $::apache::params::root_group,
   $php_version      = $::apache::params::php_version,
   # php security settings
+  $php_date_timezone = 'UTC',
   $php_expose_php   = 'Off',
   $php_allow_url_fopen    = 'Off',
   $php_disable_functions  = 'pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,chown,diskfreespace,disk_free_space,disk_total_space,dl,exec,escapeshellarg,escapeshellcmd,fileinode,highlight_file,max_execution_time,passthru,pclose,phpinfo,popen,proc_close,proc_open,proc_get_status,proc_nice,proc_open,proc_terminate,set_time_limit,shell_exec,show_source,system,serialize,unserialize,__construct, __destruct, __call,__wakeup',
@@ -106,6 +107,11 @@ class apache::mod::php (
   # Harden apache php.ini config
   file { "${apache::mod::php::php_ini}":
     ensure => present,
+  }
+  file_line { 'php.ini: Configure timezone':
+    path  => "${apache::mod::php::php_ini}",
+    line  => "date.timezone = '${apache::mod::php::php_date_timezone}'",
+    match => '^date.timezone = .*',
   }
   file_line { 'php.ini: Configure expose_php':
     path  => "${apache::mod::php::php_ini}",
