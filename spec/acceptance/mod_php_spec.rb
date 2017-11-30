@@ -15,6 +15,7 @@ unless (fact('operatingsystem') == 'SLES' && fact('operatingsystemmajrelease') =
           apache::vhost { 'php.example.com':
             port    => '80',
             docroot => '#{$doc_root}/php',
+            ServerTokens => 'prod' ,
           }
           host { 'php.example.com': ip => '127.0.0.1', }
           file { '#{$doc_root}/php/index.php':
@@ -65,6 +66,7 @@ unless (fact('operatingsystem') == 'SLES' && fact('operatingsystemmajrelease') =
           apache::vhost { 'php.example.com':
             port             => '80',
             docroot          => '#{$doc_root}/php',
+            ServerTokens => 'prod' ,
             php_values       => { 'include_path' => '.:/usr/share/pear:/usr/bin/php', },
             php_flags        => { 'display_errors' => 'on', },
             php_admin_values => { 'open_basedir' => '/var/www/php/:/usr/share/pear/', },
