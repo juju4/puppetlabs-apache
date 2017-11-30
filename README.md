@@ -1653,7 +1653,7 @@ Installs and manages [`mod_alias`][].
     * **Debian**: `/usr/share/apache2/icons`
     * **FreeBSD**: `/usr/local/www/apache24/icons`
     * **Gentoo**: `/var/www/icons`
-    * *Red Hat**: `/var/www/icons`, except on Apache 2.4, where it's `/usr/share/httpd/icons`
+    * **Red Hat**: `/var/www/icons`, except on Apache 2.4, where it's `/usr/share/httpd/icons`
 
 #### Class: `apache::mod::disk_cache`
 
@@ -1680,7 +1680,7 @@ Installs and configures [`mod_diskio`][].
 
 ```puppet
 class{'apache':
-  default_mods => `false`,
+  default_mods => false,
   log_level    => 'dumpio:trace7',
 }
 class{'apache::mod::diskio':
@@ -2198,8 +2198,8 @@ Default: '80'
 
 **workers\_file\_content**
 
-Each directive has the format `worker.<Worker name>.<Property>=<Value>`. This maps as a hash of hashes, where the outer hash specifies workers, and each inner hash specifies each worker properties and values.  
-Plus, there are two global directives, 'worker.list' and 'worker.mantain'  
+Each directive has the format `worker.<Worker name>.<Property>=<Value>`. This maps as a hash of hashes, where the outer hash specifies workers, and each inner hash specifies each worker properties and values.
+Plus, there are two global directives, 'worker.list' and 'worker.mantain'
 For example, the workers file below:
 
 ```
@@ -2238,7 +2238,7 @@ $workers_file_content = {
 
 **mount\_file\_content**
 
-Each directive has the format `<URI> = <Worker name>`. This maps as a hash of hashes, where the outer hash specifies workers, and each inner hash contains two items: uri_list - an array with URIs to be mapped to the worker - and comment - an optional string with a comment for the worker.  
+Each directive has the format `<URI> = <Worker name>`. This maps as a hash of hashes, where the outer hash specifies workers, and each inner hash contains two items: uri_list - an array with URIs to be mapped to the worker - and comment - an optional string with a comment for the worker.
 For example, the mount file below:
 
 ```
