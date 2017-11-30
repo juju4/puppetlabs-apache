@@ -7,7 +7,11 @@ describe package('php'), :if => os[:family] == 'redhat' do
   it { should be_installed }
 end
 
-describe package('php-common'), :if => os[:family] == 'ubuntu' do
+describe package('php-common'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+  it { should be_installed }
+end
+
+describe package('php5-common'), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
   it { should be_installed }
 end
 
