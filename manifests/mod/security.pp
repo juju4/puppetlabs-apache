@@ -25,11 +25,6 @@ class apache::mod::security (
   $secrequestbodynofileslimit  = '131072',
   $secrequestbodyinmemorylimit = '131072',
   $manage_security_crs         = true,
-  $headers_csp                 = "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self'; upgrade-insecure-requests; report-uri /csp/report.php",
-  $headers_hsts                = 'max-age=16070400; includeSubDomains',
-  $headers_xss_protection       = '1; mode=block',
-  $headers_refpolicy           = 'origin',
-  $headers_expectct            = 'max-age=0, report-uri,report-uri=/csp/report.php',
 ) inherits ::apache::params {
   include ::apache
 
