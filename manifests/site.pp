@@ -13,7 +13,6 @@ apache::vhost { 'www.example.com':
   directories => [
     {
       'path'         => '/var/www/html',
-      'ServerTokens' => 'prod' ,
     },
     {
       'path'     => '(\.swp|\.bak|~|\.svn|\.git|\.ht*)$',
@@ -29,10 +28,7 @@ apache::vhost { 'www.example.com':
     }
   ],
   headers => [
-#    {
-      'Set X-Robots-Tag "noindex, noarchive, nosnippet"',
 #      'Set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'self'; upgrade-insecure-requests; report-uri /csp/report.php"'
-#    }
   ],
 }
 
@@ -51,7 +47,6 @@ apache::vhost { 'ssl.example.com':
   directories => [
     {
       'path'         => '/var/www/html',
-      'ServerTokens' => 'prod' ,
     },
     {
       'path'     => '(\.swp|\.bak|~|\.svn|\.git|\.ht*)$',
