@@ -92,7 +92,7 @@ unless (fact('operatingsystem') == 'SLES' && fact('operatingsystemmajrelease') =
 
       describe file("#{$vhost_dir}/25-php.example.com.conf") do
         it { is_expected.to contain "  php_flag display_errors on" }
-        it { is_expected.to contain "  php_value include_path \".:/usr/share/pear:/usr/bin/php\"" }
+        it { is_expected.to contain "  php_value include_path \"/usr/share/pear:/usr/bin/php\"" }
         it { is_expected.to contain "  php_admin_flag engine on" }
         it { is_expected.to contain "  php_admin_value open_basedir /var/www/php/:/usr/share/pear/" }
       end
