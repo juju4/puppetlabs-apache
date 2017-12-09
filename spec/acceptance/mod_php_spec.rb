@@ -67,7 +67,7 @@ unless (fact('operatingsystem') == 'SLES' && fact('operatingsystemmajrelease') =
             port             => '80',
             docroot          => '#{$doc_root}/php',
             ServerTokens => 'prod' ,
-            php_values       => { 'include_path' => '.:/usr/share/pear:/usr/bin/php', },
+            php_values       => { 'include_path' => '/usr/share/pear:/usr/share/php', },
             php_flags        => { 'display_errors' => 'on', },
             php_admin_values => { 'open_basedir' => '/var/www/php/:/usr/share/pear/', },
             php_admin_flags  => { 'engine' => 'on', },
