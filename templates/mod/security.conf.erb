@@ -1,20 +1,3 @@
-<IfModule mod_headers.c>
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-Frame-Options "sameorigin"
-    Header set Strict-Transport-Security "<%= @headers_hsts %>"
-    ## https://www.w3.org/TR/upgrade-insecure-requests/
-    Header set Upgrade-Insecure-Requests "1"
-    Header set X-XSS-Protection "<%= @headers_xss_protection %>"
-    Header set Content-Security-Policy "<%= @headers_csp %>"
-    Header set Referrer-Policy "<%= @headers_refpolicy %>"
-    Header set Expect-CT "<%= @headers_expectct %>"
-    # Note: might break some app... need Apache 2.2.4+
-    # https://scotthelme.co.uk/csrf-is-dead/
-    Header edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure;SameSite
-    # want to be indexed by search engine?
-    Header set X-Robots-Tag none
-</IfModule>
-
 <IfModule mod_security2.c>
     # Default recommended configuration
     SecRuleEngine <%= @modsec_secruleengine %>
