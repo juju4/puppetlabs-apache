@@ -22,9 +22,6 @@ before_install:
   - env
   - pwd
   - find -ls
-## use appropriate role path and not github name
-  - "[ -f get-dependencies.sh ] && sh -x get-dependencies.sh"
-  - sudo pip install ansible
   - gem install kitchen
   - gem install kitchen-puppet
   - gem install kitchen-sync
