@@ -33,5 +33,3 @@ platforms:
 
 suites:
   - name: default
-  - name: default-ad-sso
-  - name: default-syslog
