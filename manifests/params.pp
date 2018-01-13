@@ -309,7 +309,7 @@ class apache::params inherits ::apache::version {
     $security_txt           = true
     $security_txt_template  = 'apache/vhost/security.txt.erb'
     $http_protocol_options  = undef
-    $keepalive              = 'Off'
+    $keepalive              = 'On'
     $keepalive_timeout      = 15
     $max_keepalive_requests = 100
     $fastcgi_lib_path       = '/var/lib/apache2/fastcgi'
@@ -437,7 +437,7 @@ class apache::params inherits ::apache::version {
     $security_txt         = true
     $security_txt_template = 'apache/vhost/security.txt.erb'
     $http_protocol_options = undef
-    $keepalive            = 'Off'
+    $keepalive            = 'On'
     $keepalive_timeout    = 15
     $max_keepalive_requests = 100
     $fastcgi_lib_path     = undef # TODO: revisit
@@ -507,7 +507,7 @@ class apache::params inherits ::apache::version {
     $security_txt         = true
     $security_txt_template = 'apache/vhost/security.txt.erb'
     $http_protocol_options = undef
-    $keepalive            = 'Off'
+    $keepalive            = 'On'
     $keepalive_timeout    = 15
     $max_keepalive_requests = 100
     $fastcgi_lib_path     = undef # TODO: revisit
@@ -576,7 +576,7 @@ class apache::params inherits ::apache::version {
     $security_txt           = true
     $security_txt_template  = 'apache/vhost/security.txt.erb'
     $http_protocol_options  = undef
-    $keepalive              = 'Off'
+    $keepalive              = 'On'
     $keepalive_timeout      = 15
     $max_keepalive_requests = 100
     $fastcgi_lib_path       = '/var/lib/apache2/fastcgi'
