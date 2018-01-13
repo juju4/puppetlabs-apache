@@ -1095,7 +1095,7 @@ define apache::vhost(
 
   # Template uses no variables
   if $security_txt {
-    file { "${name}-security.txt":
+    file { "${docroot}/${name}-security.txt":
 # FIXME! puppet complain if file exists because of another vhost...
 #   Error: Evaluation Error: Error while evaluating a Resource Statement, Evaluation Error: Error while evaluating a Resource Statement, Duplicate declaration: File[/var/www/html/security.txt] is already declared in file /tmp/kitchen/modules/apache/manifests/vhost.pp:1099; cannot redeclare at /tmp/kitchen/modules/apache/manifests/vhost.pp:1099 at /tmp/kitchen/modules/apache/manifests/vhost.pp:1099:3  at /tmp/kitchen/modules/apache/manifests/init.pp:380 on node 51a0780bb787
 #    file { "${docroot}/security.txt":
