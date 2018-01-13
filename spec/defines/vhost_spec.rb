@@ -159,6 +159,7 @@ describe 'apache::vhost', :type => :define do
           'ssl_proxy_check_peer_name'   => 'on',
           'ssl_proxy_check_peer_expire' => 'on',
           'ssl_proxyengine'             => true,
+          'ssl_proxy_cipher_suite'      => 'HIGH',
           'ssl_proxy_protocol'          => 'TLSv1.2',
 
           'priority'                    => '30',
@@ -392,6 +393,7 @@ describe 'apache::vhost', :type => :define do
           'use_optional_includes'       => true,
           'suexec_user_group'           => 'root root',
           'allow_encoded_slashes'       => 'nodecode',
+          'use_canonical_name'          => 'dns',
           'passenger_spawn_method'      => 'direct',
           'passenger_app_root'          => '/usr/share/myapp',
           'passenger_app_env'           => 'test',
@@ -595,6 +597,8 @@ describe 'apache::vhost', :type => :define do
         :content => /^\s+SSLProxyCheckPeerName\s+on$/ ) }
       it { is_expected.to contain_concat__fragment('rspec.example.com-sslproxy').with(
         :content => /^\s+SSLProxyCheckPeerExpire\s+on$/ ) }
+      it { is_expected.to contain_concat__fragment('rspec.example.com-sslproxy').with(
+        :content => /^\s+SSLProxyCipherSuite\s+HIGH$/ ) }
       it { is_expected.to contain_concat__fragment('rspec.example.com-sslproxy').with(
         :content => /^\s+SSLProxyProtocol\s+TLSv1.2$/ ) }
       it { is_expected.to contain_concat__fragment('rspec.example.com-suphp') }

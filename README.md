@@ -50,6 +50,7 @@
 [`apache::mod::authn_dbd`]: #class-apachemodauthn_dbd
 [`apache::mod::authnz_ldap`]: #class-apachemodauthnz_ldap
 [`apache::mod::cluster`]: #class-apachemodcluster
+[`apache::mod::data]: #class-apachemoddata
 [`apache::mod::disk_cache`]: #class-apachemoddisk_cache
 [`apache::mod::dumpio`]: #class-apachemoddumpio
 [`apache::mod::event`]: #class-apachemodevent
@@ -65,6 +66,7 @@
 [`apache::mod::proxy_balancer`]: #class-apachemodproxybalancer
 [`apache::mod::proxy_fcgi`]: #class-apachemodproxy_fcgi
 [`apache::mod::proxy_html`]: #class-apachemodproxy_html
+[`apache::mod::python`]: #class-apachemodpython
 [`apache::mod::security`]: #class-apachemodsecurity
 [`apache::mod::shib`]: #class-apachemodshib
 [`apache::mod::ssl`]: #class-apachemodssl
@@ -144,6 +146,7 @@
 [`keepalive` parameter]: #keepalive
 [`keepalive_timeout`]: #keepalive_timeout
 [`limitreqfieldsize`]: https://httpd.apache.org/docs/current/mod/core.html#limitrequestfieldsize
+[`limitreqfields`]: http://httpd.apache.org/docs/current/mod/core.html#limitrequestfields
 
 [`lib`]: #lib
 [`lib_path`]: #lib_path
@@ -188,6 +191,7 @@
 [`mod_proxy`]: https://httpd.apache.org/docs/current/mod/mod_proxy.html
 [`mod_proxy_balancer`]: https://httpd.apache.org/docs/current/mod/mod_proxy_balancer.html
 [`mod_reqtimeout`]: https://httpd.apache.org/docs/current/mod/mod_reqtimeout.html
+[`mod_python`]: http://modpython.org/
 [`mod_rewrite`]: https://httpd.apache.org/docs/current/mod/mod_rewrite.html
 [`mod_security`]: https://www.modsecurity.org/
 [`mod_ssl`]: https://httpd.apache.org/docs/current/mod/mod_ssl.html
@@ -261,6 +265,8 @@
 [`TimeOut`]: https://httpd.apache.org/docs/current/mod/core.html#timeout
 [template]: http://docs.puppet.com/puppet/latest/reference/lang_template.html
 [`TraceEnable`]: https://httpd.apache.org/docs/current/mod/core.html#traceenable
+
+[`UseCanonicalName`]: https://httpd.apache.org/docs/current/mod/core.html#usecanonicalname
 
 [`verify_config`]: #verify_config
 [`vhost`]: #defined-type-apachevhost
@@ -1095,7 +1101,7 @@ Determines whether to enable persistent HTTP connections with the [`KeepAlive`][
 
 Values: 'Off', 'On'.
 
-Default: 'Off'.
+Default: 'On'.
 
 ##### `keepalive_timeout`
 
@@ -1393,6 +1399,14 @@ Values: 'Off', 'On'.
 
 Default: 'On'.
 
+##### `use_canonical_name`
+
+Controls Apache's [`UseCanonicalName`][] directive which controls how Apache handles self-referential URLs. If not specified, this parameter omits the declaration from the server's configuration and uses Apache's default setting of 'off'.
+
+Values: 'On', 'on', 'Off', 'off', 'DNS', 'dns'.
+
+Default: `undef`.
+
 ##### `use_systemd`
 
 Controls whether the systemd module should be installed on Centos 7 servers, this is especially useful if using custom-built RPMs.
@@ -1503,6 +1517,12 @@ Default: Depends on operating system:
 - **Red Hat**: 'access_log'
 - **Suse**: 'access.log'
 
+##### `limitreqfields`
+
+The [`limitreqfields`][] parameter sets the maximum number of request header fields in an HTTP request. This directive gives the server administrator greater control over abnormal client request behavior, which may be useful for avoiding some forms of denial-of-service attacks. The value should be increased if normal clients see an error response from the server that indicates too many fields were sent in the request.
+
+Default: '100'
+
 #### Class: `apache::dev`
 
 Installs Apache development libraries.
@@ -1573,6 +1593,7 @@ The following Apache modules have supported classes, many of which allow for par
 * `cgi`
 * `cgid`
 * `cluster` (see [`apache::mod::cluster`][])
+* `data`
 * `dav`
 * `dav_fs`
 * `dav_svn`\*
@@ -1615,7 +1636,7 @@ The following Apache modules have supported classes, many of which allow for par
 * `proxy_balancer`
 * `proxy_html` (see [`apache::mod::proxy_html`][])
 * `proxy_http`
-* `python`
+* `python` (see [`apache::mod::python`][])
 * `reqtimeout`
 * `remoteip`\*
 * `rewrite`
@@ -1671,6 +1692,14 @@ To specify the cache root, pass a path as a string to the `cache_root` parameter
 ``` puppet
 class {'::apache::mod::disk_cache':
   cache_root => '/path/to/cache',
+}
+```
+
+To specify cache ignore headers, pass a string to the `cache_ignore_headers` parameter.
+
+``` puppet
+class {'::apache::mod::disk_cache':
+  cache_ignore_headers => "Set-Cookie",
 }
 ```
 
@@ -1991,9 +2020,9 @@ Installs and configures [`mod_deflate`][].
 
 **Parameters**:
 
-* `types`: An [array][] of [MIME types][MIME `content*type`] to be deflated.
+* `types`: An [array][] of [MIME types][MIME `content-type`] to be deflated.
 
-  Default: ['text/html text/plain text/xml', 'text/css', 'application/x*javascript application/javascript application/ecmascript', 'application/rss+xml', 'application/json'].
+  Default: ['text/html text/plain text/xml', 'text/css', 'application/x-javascript application/javascript application/ecmascript', 'application/rss+xml', 'application/json'].
 
 * `notes`: A [Hash][] where the key represents the type and the value represents the note name.
 
@@ -2015,9 +2044,9 @@ Installs [`mod_expires`][] and uses the `expires.conf.erb` template to generate 
 
   Default: `undef`.
 
-* `expires_by_type`: Describes a set of [MIME `content*type`][] and their expiration times.
+* `expires_by_type`: Describes a set of [MIME `content-type`][] and their expiration times.
 
-  Values: An [array][] of [Hashes][Hash], with each Hash's key a valid MIME `content*type` (i.e. 'text/json') and its value following valid [interval syntax][].
+  Values: An [array][] of [Hashes][Hash], with each Hash's key a valid MIME `content-type` (i.e. 'text/json') and its value following valid [interval syntax][].
 
   Default: `undef`.
 
@@ -2148,6 +2177,54 @@ Installs and manages [`mod_info`][], which provides a comprehensive overview of 
   Boolean.
 
   Default: `true`.
+
+##### Class: `apache::mod::itk`
+
+Installs and manages [`mod_itk`][], which is an (MPM) that is loaded and configured for the HTTPD process. [official documentation](http://mpm-itk.sesse.net/)
+
+**Parameters**:
+
+* `startservers`: The number of child server processes created on startup.
+
+  Values: Integer.
+
+  Default: `8`.
+
+* `minspareservers`: The desired minimum number of idle child server processes.
+
+  Values: Integer.
+
+  Default: `5`.
+
+* `maxspareservers`: The desired maximum number of idle child server processes.
+
+  Values: Integer.
+
+  Default: `20`.
+
+* `serverlimit`: The maximum configured value for MaxRequestWorkers for the lifetime of the Apache httpd process.
+
+  Values: Integer.
+
+  Default: `256`.
+
+* `maxclients`: The limit on the number of simultaneous requests that will be served.
+
+  Values: Integer.
+
+  Default: `256`.
+
+* `maxrequestsperchild`: The limit on the number of connections that an individual child server process will handle.
+
+  Values: Integer.
+
+  Default: `4000`.
+
+* `enablecapabilities`: Drop most root capabilities in the parent process, and instead run as the user given by the User/Group directives with some extra capabilities (in particular setuid). Somewhat more secure, but can cause problems when serving from filesystems that do not honor capabilities, such as NFS.
+
+  Values: Boolean.
+
+  Default: `undef`.
 
 ##### Class: `apache::mod::jk`
 
@@ -2409,6 +2486,7 @@ Installs and configures [`mod_ldap`][], and allows you to modify the
 class { 'apache::mod::ldap':
   ldap_trusted_global_cert_file => '/etc/pki/tls/certs/ldap-trust.crt',
   ldap_trusted_global_cert_type => 'CA_DER',
+  ldap_trusted_mode             => 'TLS',
   ldap_shared_cache_size        => '500000',
   ldap_cache_entries            => '1024',
   ldap_cache_ttl                => '600',
@@ -2428,6 +2506,8 @@ class { 'apache::mod::ldap':
 * `ldap_trusted_global_cert_type`: Specifies the global trust certificate format.
 
   Default: 'CA_BASE64'.
+
+* `ldap_trusted_mode`: Specifies the SSL/TLS mode to be used when connecting to an LDAP server.
 
 * `ldap_shared_cache_size`: Specifies the size, in bytes, of the shared memory cache.
 
@@ -2457,7 +2537,7 @@ Installs and configures [`mod_negotiation`][].
 
 * `language_priority`: An [array][] of languages to set the `LanguagePriority` option of the module.
 
-  Default: ['en', 'ca', 'cs', 'da', 'de', 'el', 'eo', 'es', 'et', 'fr', 'he', 'hr', 'it', 'ja', 'ko', 'ltz', 'nl', 'nn', 'no', 'pl', 'pt', 'pt*BR', 'ru', 'sv', 'zh*CN', 'zh*TW']
+  Default: ['en', 'ca', 'cs', 'da', 'de', 'el', 'eo', 'es', 'et', 'fr', 'he', 'hr', 'it', 'ja', 'ko', 'ltz', 'nl', 'nn', 'no', 'pl', 'pt', 'pt-BR', 'ru', 'sv', 'zh-CN', 'zh-TW']
 
 ##### Class: `apache::mod::nss`
 
@@ -2577,9 +2657,9 @@ Installs and manages [`mod_proxy_balancer`][], which provides load balancing.
 
 * `manager_path`: The server location of the balancer manager.
 
-  Default: '/balancer*manager'.
+  Default: '/balancer-manager'.
 
-* `allow_from`: An [array][] of IPv4 or IPv6 addresses that can access `/balancer*manager`.
+* `allow_from`: An [array][] of IPv4 or IPv6 addresses that can access `/balancer-manager`.
 
   Default: ['127.0.0.1','::1'].
 
@@ -2604,6 +2684,14 @@ Default values for these parameters depend on your operating system. Most of thi
 ##### Class: `apache::mod::proxy_html`
 
 **Note**: There is no official package available for `mod_proxy_html`, so you must make it available outside of the apache module.
+
+##### Class: `apache::mod::python`
+
+Installs and configures [`mod_python`][].
+
+**Parameters**
+
+* `loadfile_name`: Sets the name of the configuration file that is used to load the python module.
 
 ##### Class: `apache::mod::reqtimeout`
 
@@ -2718,6 +2806,24 @@ Installs [`mod_status`][] and uses the `status.conf.erb` template to generate it
 * `allow_from`: An [array][] of IPv4 or IPv6 addresses that can access `/server-status`.
 
   Default: ['127.0.0.1','::1'].
+
+* `requires`: A string, an [array][] or a [hash][], of IPs and/or names that can/can't access `/server-status`, using Apache v. >= 2.4 `mod_authz_host` directives (`require ip`, `require host`, etc.). This parameter should follow one of the structures below:
+
+  > Only used if Apache version >= 2.4
+
+  - `undef` - Uses `allow_from` and old directive syntax (`Allow from <List of IPs and/or names>`). Issues deprecation warning.
+  - String
+    - `''` or `'unmanaged'` - No auth directives (access controlled elsewhere)
+    - `'ip <List of IPs>'` - IPs/ranges allowed to access `/server-status`
+    - `'host <List of names>'` - Names/domains allowed to access `/server-status`
+    - `'all [granted|denied]'` - Allow / block everyone
+  - Array - Each item should be a string from those described above. Results in one directive per array item.
+  - Hash with structure below (shown as key => value, where keys are strings):
+    - `'requires'` => Array as above - Same effect as the array
+    - `'enforce'`  => String `'Any'`, `'All'` or `'None'` (optional) - Encloses all directives from `'requires'` key in a `<Require(Any|All|None)>` block
+
+  Default: 'ip 127.0.0.1 ::1'
+
 * `extended_status`: Determines whether to track extended status information for each request, via the [`ExtendedStatus`][] directive.
 
   Values: 'Off', 'On'.
@@ -2751,13 +2857,13 @@ Installs and configures Trustwave's [`mod_security`][]. It is enabled and runs b
 **Parameters**:
 
 * `activated_rules`: An [array][] of rules from the `modsec_crs_path` or absolute to activate via symlinks.
-* `allowed_methods`: A space*separated list of allowed HTTP methods.
+* `allowed_methods`: A space-separated list of allowed HTTP methods.
 
   Default: 'GET HEAD POST OPTIONS'.
 
-* `content_types`: A list of one or more allowed [MIME types][MIME `content*type`].
+* `content_types`: A list of one or more allowed [MIME types][MIME `content-type`].
 
-  Default: 'application/x*www*form*urlencoded|multipart/form*data|text/xml|application/xml|application/x*amf'.
+  Default: 'application/x-www-form-urlencoded|multipart/form-data|text/xml|application/xml|application/x-amf'.
 
 * `crs_package`: Names the package that installs CRS rules.
 
@@ -2776,13 +2882,13 @@ ${modsec\_dir}/activated\_rules.
 
   Default: `modsec_secruleengine` in [`apache::params`][].
 
-* `restricted_extensions`: A space*separated list of prohibited file extensions.
+* `restricted_extensions`: A space-sparated list of prohibited file extensions.
 
   Default: '.asa/ .asax/ .ascx/ .axd/ .backup/ .bak/ .bat/ .cdx/ .cer/ .cfg/ .cmd/ .com/ .config/ .conf/ .cs/ .csproj/ .csr/ .dat/ .db/ .dbf/ .dll/ .dos/ .htr/ .htw/ .ida/ .idc/ .idq/ .inc/ .ini/ .key/ .licx/ .lnk/ .log/ .mdb/ .old/ .pass/ .pdb/ .pol/ .printer/ .pwd/ .resources/ .resx/ .sql/ .sys/ .vb/ .vbs/ .vbproj/ .vsdisco/ .webinfo/ .xsd/ .xsx/'.
 
 * `restricted_headers`: A list of restricted headers separated by slashes and spaces.
 
-  Default: 'Proxy*Connection/ /Lock*Token/ /Content*Range/ /Translate/ /via/ /if/'.
+  Default: 'Proxy-Connection/ /Lock-Token/ /Content-Range/ /Translate/ /via/ /if/'.
 
 * `secdefaultaction`: Configures the Mode of Operation, Self-Contained ('deny') or Collaborative Detection ('pass'), for the OWASP ModSecurity Core Rule Set.
 
@@ -2874,7 +2980,7 @@ Enables Python support via [`mod_wsgi`][].
 
   Default: `undef`.
 
-* `wsgi_python_path`: Defines the [`WSGIPythonPath`][] directive, such as '/path/to/venv/site*packages'.
+* `wsgi_python_path`: Defines the [`WSGIPythonPath`][] directive, such as '/path/to/venv/site-packages'.
 
   Values: A string specifying a path.
 
@@ -2941,6 +3047,12 @@ Sets the title of the balancer cluster and name of the `conf.d` file containing 
 Configures key-value pairs as [`ProxySet`][] lines. Values: a [hash][].
 
 Default: '{}'.
+
+##### `options`
+
+Specifies an [array][] of [options](https://httpd.apache.org/docs/current/mod/mod_proxy.html#balancermember) after the balancer URL, and accepts any key-value pairs available to [`ProxyPass`][].
+
+Default: [].
 
 ##### `collect_exported`
 
@@ -3945,11 +4057,16 @@ Default: `undef`.
 
 Sets the [`PassengerStartupFile`](https://www.phusionpassenger.com/library/config/apache/reference/#passengerstartupfile) path. This path is relative to the application root.
 
-##### `php_flags & values`
+##### `php_values & php_flags`
 
 Allows per-virtual host setting [`php_value`s or `php_flag`s](http://php.net/manual/en/configuration.changes.php). These flags or values can be overwritten by a user or an application.
 
 Default: '{}'.
+
+Within a vhost declaration:
+``` puppet
+  php_values    => [ 'include_path ".:/usr/local/example-app/include"' ],
+```
 
 ##### `php_admin_flags & values`
 
@@ -4786,6 +4903,7 @@ to environment variables.
 - `mellon_sp_private_key_file`: Sets the [MellonSPPrivateKeyFile][`mod_auth_mellon`] directive for the private key location of the service provider.
 - `mellon_sp_cert_file`: Sets the [MellonSPCertFile][`mod_auth_mellon`] directive for the public key location of the service provider.
 - `mellon_user`: Sets the [MellonUser][`mod_auth_mellon`] attribute to use for the username.
+- `mellon_session_length`: Sets the [MellonSessionLength][`mod_auth_mellon`] attribute.
 
 ##### `options`
 
@@ -4987,6 +5105,10 @@ apache::vhost { 'secure.example.net':
 
 When set to 'On', this turns on the use of request headers to publish attributes to applications. Values for this key is 'On' or 'Off', and the default value is 'Off'. This key is disabled if `apache::mod::shib` is not defined. Check the [`mod_shib` documentation](https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPApacheConfig#NativeSPApacheConfig-Server/VirtualHostOptions) for more details.
 
+##### `shib_compat_valid_user`
+
+Default is Off, matching the behavior prior to this command's existence. Addresses a conflict when using Shibboleth in conjunction with other auth/auth modules by restoring "standard" Apache behavior when processing the "valid-user" and "user" Require rules. See the [`mod_shib`documentation](https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPApacheConfig#NativeSPApacheConfig-Server/VirtualHostOptions), and [NativeSPhtaccess](https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPhtaccess) topic for more details. This key is disabled if `apache::mod::shib` is not defined.
+
 ##### `ssl_options`
 
 String or list of [SSLOptions](https://httpd.apache.org/docs/current/mod/mod_ssl.html#ssloptions), which configure SSL engine run-time options. This handler takes precedence over SSLOptions set in the parent block of the virtual host.
@@ -5172,6 +5294,12 @@ Default: `undef`.
 Sets the [SSLProxyVerifyDepth](https://httpd.apache.org/docs/current/mod/mod_ssl.html#sslproxyverifydepth) directive, which configures how deeply mod_ssl should verify before deciding that the remote server does not have a valid certificate.
 
 A depth of 0 means that only self-signed remote server certificates are accepted, the default depth of 1 means the remote server certificate can be self-signed or signed by a CA that is directly known to the server.
+
+Default: `undef`
+
+##### `ssl_proxy_cipher_suite`
+
+Sets the [SSLProxyCipherSuite](https://httpd.apache.org/docs/current/mod/mod_ssl.html#sslproxyciphersuite) directive, which controls cipher suites supported for ssl proxy traffic.
 
 Default: `undef`
 

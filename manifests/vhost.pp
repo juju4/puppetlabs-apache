@@ -32,6 +32,7 @@ define apache::vhost(
   Optional[Enum['on', 'off']] $ssl_proxy_check_peer_name                            = undef,
   Optional[Enum['on', 'off']] $ssl_proxy_check_peer_expire                          = undef,
   $ssl_proxy_machine_cert                                                           = undef,
+  $ssl_proxy_cipher_suite                                                           = undef,
   $ssl_proxy_protocol                                                               = undef,
   $ssl_options                                                                      = undef,
   $ssl_openssl_conf_cmd                                                             = undef,
@@ -192,6 +193,8 @@ define apache::vhost(
   $cas_login_url                                                                    = undef,
   $cas_validate_url                                                                 = undef,
   $cas_validate_saml                                                                = undef,
+  Optional[String] $shib_compat_valid_user                                          = undef,
+  Optional[Enum['On', 'on', 'Off', 'off', 'DNS', 'dns']] $use_canonical_name        = undef,
   $security_txt                                                                     = $::apache::params::security_txt,
   $security_txt_value                                                               = $::apache::params::security_txt_template,
 ) {
@@ -213,7 +216,7 @@ define apache::vhost(
   # Input validation begins
 
   if $log_level {
-    validate_apache_log_level($log_level)
+    apache::validate_apache_log_level($log_level)
   }
 
   if $access_log_file and $access_log_pipe {
@@ -306,20 +309,6 @@ define apache::vhost(
   $cas_enabled = defined(Apache::Mod['auth_cas'])
 
   if $access_log and !$access_logs {
-    if $access_log_file {
-      if $access_log_file =~ /^\// {
-        # Absolute path provided - don't prepend $logroot
-        $_logs_dest = $access_log_file
-      } else {
-        $_logs_dest = "${logroot}/${access_log_file}"
-      }
-    } elsif $access_log_pipe {
-      $_logs_dest = $access_log_pipe
-    } elsif $access_log_syslog {
-      $_logs_dest = $access_log_syslog
-    } else {
-      $_logs_dest = undef
-    }
     $_access_logs = [{
       'file'        => $access_log_file,
       'pipe'        => $access_log_pipe,
@@ -1083,6 +1072,25 @@ define apache::vhost(
       target  => "${priority_real}${filename}.conf",
       order   => 350,
       content => template('apache/vhost/_http_protocol_options.erb'),
+    }
+  }
+
+  # Template uses:
+  # - $shibboleth_enabled
+  if $shibboleth_enabled {
+    concat::fragment { "${name}-shibboleth":
+      target  => "${priority_real}${filename}.conf",
+      order   => 370,
+      content => template('apache/vhost/_shib.erb'),
+    }
+  }
+
+  # - $use_canonical_name
+  if $use_canonical_name {
+    concat::fragment { "${name}-use_canonical_name":
+      target  => "${priority_real}${filename}.conf",
+      order   => 360,
+      content => template('apache/vhost/_use_canonical_name.erb'),
     }
   }
 

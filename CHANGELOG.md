@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org).
 ## Unreleased
 - enforce modern crypto ciphers and protocol
 - define HTTP security headers
+- ServerTokens: default to Prod
+- http security headers: CSP, XSS, HSTS, Expect-CT...
+- basic CSP report uri page in PHP
+- php config hardening
+- security.txt template
 
 ## Supported Release [2.3.0]
 ### Summary
