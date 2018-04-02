@@ -3,6 +3,8 @@ class apache::mod::ssl (
   $ssl_cryptodevice                                         = 'builtin',
   $ssl_options                                              = [ 'StdEnvVars' ],
   $ssl_openssl_conf_cmd                                     = undef,
+  Optional[String] $ssl_cert                                = undef,
+  Optional[String] $ssl_key                                 = undef,
   $ssl_ca                                                   = undef,
   $ssl_cipher                                               = 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH',
   Variant[Boolean, Enum['on', 'off']] $ssl_honorcipherorder = true,

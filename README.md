@@ -1376,6 +1376,22 @@ Values: a command to restart the Apache service. The default setting uses the [d
 
 Default: `undef`.
 
+##### `ssl_cert`
+
+This enables the user to specify a specific SSLCertificateFile.
+
+For more information see: [SSLCertificateFile](https://httpd.apache.org/docs/current/mod/mod_ssl.html#SSLCertificateFile)
+
+Default: `undef.`
+
+##### `ssl_key`
+This enables the user to specify a specific SSLCertificateKey.
+
+For more information see: [SSLCertificateKey](https://httpd.apache.org/docs/current/mod/mod_ssl.html#SSLCertificateKeyFile)
+
+Default: `undef`.
+
+
 ##### `ssl_ca`
 
 Specifies the SSL certificate authority. [SSLCACertificateFile](https://httpd.apache.org/docs/current/mod/mod_ssl.html#sslcacertificatefile) to use to verify certificate used in ssl client authentication.
@@ -2276,14 +2292,14 @@ Default: '80'
 **workers\_file\_content**
 
 Each directive has the format `worker.<Worker name>.<Property>=<Value>`. This maps as a hash of hashes, where the outer hash specifies workers, and each inner hash specifies each worker properties and values.
-Plus, there are two global directives, 'worker.list' and 'worker.mantain'
+Plus, there are two global directives, 'worker.list' and 'worker.maintain'
 For example, the workers file below:
 
 ```
 worker.list = status
 worker.list = some_name,other_name
 
-worker.mantain = 60
+worker.maintain = 60
 
 # Optional comment
 worker.some_name.type=ajp13
@@ -2298,14 +2314,14 @@ Should be parameterized as:
 
 ```
 $workers_file_content = {
-  worker_lists   => ['status', 'some_name,other_name'],
-  worker_mantain => '60',
-  some_name      => {
+  worker_lists    => ['status', 'some_name,other_name'],
+  worker_maintain => '60',
+  some_name       => {
     comment          => 'Optional comment',
     type             => 'ajp13',
     socket_keepalive => 'true',
   },
-  other_name     => {
+  other_name      => {
     comment          => 'I just like comments',
     type             => 'ajp12',
     socket_keepalive => 'false',
@@ -2728,6 +2744,8 @@ To use SSL with a virtual host, you must either set the [`default_ssl_vhost`][] 
 - `ssl_cryptodevice`: Default: 'builtin'.
 - `ssl_honorcipherorder`: Default: true.
 - `ssl_openssl_conf_cmd`: Default: undef.
+- `ssl_cert`: Default: undef.
+- `ssl_key`: Default: undef.
 - `ssl_options`: Default: ['StdEnvVars']
 - `ssl_pass_phrase_dialog`: Default: 'builtin'.
 - `ssl_protocol`: Default: ['all', '-SSLv2', '-SSLv3'].
@@ -2758,6 +2776,14 @@ To use SSL with a virtual host, you must either set the [`default_ssl_vhost`][] 
   Default: `true`.
 
 * `ssl_openssl_conf_cmd`
+
+  Default: `undef`.
+
+* `ssl_cert`
+
+  Default: `undef`.
+
+* `ssl_key`
 
   Default: `undef`.
 
@@ -4032,6 +4058,10 @@ Sets [PassengerPreStart](https://www.phusionpassenger.com/library/config/apache/
 ##### `passenger_user`
 
 Sets [PassengerUser](https://www.phusionpassenger.com/library/config/apache/reference/#passengeruser), the running user for sandboxing applications.
+
+##### `passenger_group`
+
+Sets [PassengerGroup](https://www.phusionpassenger.com/library/config/apache/reference/#passengergroup), the running group for sandboxing applications.
 
 ##### `passenger_high_performance`
 
