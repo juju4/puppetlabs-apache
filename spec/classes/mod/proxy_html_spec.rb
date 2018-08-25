@@ -18,9 +18,8 @@ describe 'apache::mod::proxy_html', type: :class do
     let :facts do
       {
         osfamily: 'Debian',
-        concat_basedir: '/dne',
         architecture: 'i386',
-        lsbdistcodename: 'squeeze',
+        lsbdistcodename: 'jessie',
         operatingsystem: 'Debian',
         id: 'root',
         kernel: 'Linux',
@@ -28,34 +27,6 @@ describe 'apache::mod::proxy_html', type: :class do
         hardwaremodel: 'i386',
         is_pe: false,
       }
-    end
-
-    context 'on squeeze' do
-      let(:facts) { super().merge(operatingsystemrelease: '6') }
-
-      it_behaves_like 'debian', ['/usr/lib/libxml2.so.2']
-      it { is_expected.not_to contain_apache__mod('xml2enc') }
-    end
-
-    context 'on wheezy i386' do
-      let(:facts) do
-        super().merge(operatingsystemrelease: '7',
-                      hardwaremodel: 'i686',
-                      architecture: 'i386')
-      end
-
-      it { is_expected.not_to contain_apache__mod('xml2enc') }
-      it_behaves_like 'debian', ['/usr/lib/i386-linux-gnu/libxml2.so.2']
-    end
-    context 'on wheezy x64' do
-      let(:facts) do
-        super().merge(operatingsystemrelease: '7',
-                      hardwaremodel: 'x86_64',
-                      architecture: 'amd64')
-      end
-
-      it { is_expected.not_to contain_apache__mod('xml2enc') }
-      it_behaves_like 'debian', ['/usr/lib/x86_64-linux-gnu/libxml2.so.2']
     end
 
     context 'on jessie i386' do
@@ -85,7 +56,6 @@ describe 'apache::mod::proxy_html', type: :class do
       {
         osfamily: 'RedHat',
         operatingsystemrelease: '6',
-        concat_basedir: '/dne',
         operatingsystem: 'RedHat',
         id: 'root',
         kernel: 'Linux',
@@ -104,7 +74,6 @@ describe 'apache::mod::proxy_html', type: :class do
       {
         osfamily: 'FreeBSD',
         operatingsystemrelease: '9',
-        concat_basedir: '/dne',
         operatingsystem: 'FreeBSD',
         id: 'root',
         kernel: 'FreeBSD',
@@ -124,7 +93,6 @@ describe 'apache::mod::proxy_html', type: :class do
         osfamily: 'Gentoo',
         operatingsystem: 'Gentoo',
         operatingsystemrelease: '3.16.1-gentoo',
-        concat_basedir: '/dne',
         id: 'root',
         kernel: 'Linux',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin',

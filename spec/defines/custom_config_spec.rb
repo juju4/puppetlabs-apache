@@ -10,9 +10,8 @@ describe 'apache::custom_config', type: :define do
   let :facts do
     {
       osfamily: 'Debian',
-      operatingsystemrelease: '6',
-      concat_basedir: '/',
-      lsbdistcodename: 'squeeze',
+      operatingsystemrelease: '8',
+      lsbdistcodename: 'jessie',
       operatingsystem: 'Debian',
       id: 'root',
       kernel: 'Linux',

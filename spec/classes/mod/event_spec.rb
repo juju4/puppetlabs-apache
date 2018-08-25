@@ -10,7 +10,6 @@ describe 'apache::mod::event', type: :class do
       {
         osfamily: 'FreeBSD',
         operatingsystemrelease: '9',
-        concat_basedir: '/dne',
         operatingsystem: 'FreeBSD',
         id: 'root',
         kernel: 'FreeBSD',
@@ -29,7 +28,6 @@ describe 'apache::mod::event', type: :class do
         osfamily: 'Gentoo',
         operatingsystem: 'Gentoo',
         operatingsystemrelease: '3.16.1-gentoo',
-        concat_basedir: '/dne',
         id: 'root',
         kernel: 'Linux',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin',
@@ -44,10 +42,9 @@ describe 'apache::mod::event', type: :class do
   context 'on a Debian OS' do
     let :facts do
       {
-        lsbdistcodename: 'squeeze',
+        lsbdistcodename: 'jessie',
         osfamily: 'Debian',
-        operatingsystemrelease: '6',
-        concat_basedir: '/dne',
+        operatingsystemrelease: '8',
         operatingsystem: 'Debian',
         id: 'root',
         kernel: 'Linux',
@@ -183,7 +180,6 @@ describe 'apache::mod::event', type: :class do
       {
         osfamily: 'RedHat',
         operatingsystemrelease: '6',
-        concat_basedir: '/dne',
         operatingsystem: 'RedHat',
         id: 'root',
         kernel: 'Linux',

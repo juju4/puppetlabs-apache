@@ -170,6 +170,7 @@
 [`mod_alias`]: https://httpd.apache.org/docs/current/mod/mod_alias.html
 [`mod_auth_cas`]: https://github.com/Jasig/mod_auth_cas
 [`mod_auth_kerb`]: http://modauthkerb.sourceforge.net/configure.html
+[`mod_auth_gssapi`]: https://github.com/modauthgssapi/mod_auth_gssapi
 [`mod_authnz_external`]: https://github.com/phokz/mod-auth-external
 [`mod_auth_dbd`]: http://httpd.apache.org/docs/current/mod/mod_authn_dbd.html
 [`mod_auth_mellon`]: https://github.com/UNINETT/mod_auth_mellon
@@ -1072,7 +1073,7 @@ Default: `false`.
 
 Sets the group ID that owns any Apache processes spawned to answer requests.
 
-By default, Puppet attempts to manage this group as a resource under the `apache` class, determining the group based on the operating system as detected by the [`apache::params`][] class. To to prevent the group resource from being created and use a group created by another Puppet module, set the [`manage_group`][] parameter's value to `false`.
+By default, Puppet attempts to manage this group as a resource under the `apache` class, determining the group based on the operating system as detected by the [`apache::params`][] class. To prevent the group resource from being created and use a group created by another Puppet module, set the [`manage_group`][] parameter's value to `false`.
 
 > **Note**: Modifying this parameter only changes the group ID that Apache uses to spawn child processes to access resources. It does not change the user that owns the parent server process.
 
@@ -1210,6 +1211,21 @@ Default: Depends on operating system.
 - **FreeBSD**: `/usr/local/etc/apache22/Modules`
 - **Gentoo**: `/etc/apache2/modules.d`
 - **Red Hat**: `/etc/httpd/conf.d`
+
+##### `mod_libs`
+
+Allows the user to override default module library names.
+
+```puppet
+include apache::params
+class { 'apache':
+  mod_libs => merge($::apache::params::mod_libs, {
+    'wsgi' => 'mod_wsgi_python3.so',
+  })
+}
+```
+
+Hash. Default: `$apache::params::mod_libs`
 
 ##### `mod_packages`
 
@@ -1597,6 +1613,7 @@ The following Apache modules have supported classes, many of which allow for par
 * `auth_cas`\* (see [`apache::mod::auth_cas`][])
 * `auth_mellon`\* (see [`apache::mod::auth_mellon`][])
 * `auth_kerb`
+* `auth_gssapi`
 * `authn_core`
 * `authn_dbd`\* (see [`apache::mod::authn_dbd`][])
 * `authn_file`
@@ -2797,7 +2814,7 @@ To use SSL with a virtual host, you must either set the [`default_ssl_vhost`][] 
 
 * `ssl_protocol`
 
-  Default: ['all', '*SSLv2', '*SSLv3'].
+  Default: ['all', '-SSLv2', '-SSLv3'].
 
 * `ssl_random_seed_bytes`
 
@@ -4230,7 +4247,7 @@ apache::vhost { 'site.name.fdqn':
   …
   redirectmatch_status => ['404','404'],
   redirectmatch_regexp => ['\.git(/.*|$)/','\.svn(/.*|$)'],
-  redirectmatch_dest => ['http://www.example.com/1','http://www.example.com/2'],
+  redirectmatch_dest => ['http://www.example.com/$1','http://www.example.com/$2'],
 }
 ```
 
@@ -5412,7 +5429,7 @@ Specifies whether or not to use [SSLProxyEngine](https://httpd.apache.org/docs/c
 
 Boolean.
 
-Default: `true`.
+Default: `false`.
 
 ##### `ssl_stapling`
 
@@ -5573,16 +5590,7 @@ most secure format supported by the most platforms.
 
 ## Limitations
 
-### General
-
-This module is CI tested against both [open source Puppet][] and [Puppet Enterprise][] on:
-
-- CentOS 5 and 6
-- Ubuntu 12.04 and 14.04
-- Debian 7
-- RHEL 5, 6, and 7
-
-This module also provides functions for other distributions and operating systems, such as FreeBSD, Gentoo, and Amazon Linux, but is not formally tested on them and are subject to regressions.
+For an extensive list of supported operating systems, see [metadata.json](https://github.com/puppetlabs/puppetlabs-apache/blob/master/metadata.json)
 
 ### FreeBSD
 

@@ -10,11 +10,10 @@ describe 'apache::mod::dumpio', type: :class do
     end
     let :facts do
       {
-        lsbdistcodename: 'squeeze',
+        lsbdistcodename: 'jessie',
         osfamily: 'Debian',
-        operatingsystemrelease: '6',
-        operatingsystemmajrelease: '6',
-        concat_basedir: '/dne',
+        operatingsystemrelease: '8',
+        operatingsystemmajrelease: '8',
         operatingsystem: 'Debian',
         id: 'root',
         kernel: 'Linux',

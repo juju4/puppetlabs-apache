@@ -11,7 +11,6 @@ describe 'apache', type: :class do
         operatingsystem: 'Debian',
         operatingsystemrelease: '6',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-        concat_basedir: '/dne',
         is_pe: false,
       }
     end
@@ -59,16 +58,7 @@ describe 'apache', type: :class do
       )
     }
     # Assert that load files are placed and symlinked for these mods, but no conf file.
-    %w[
-      auth_basic
-      authn_file
-      authz_default
-      authz_groupfile
-      authz_host
-      authz_user
-      dav
-      env
-    ].each do |modname|
+    ['auth_basic', 'authn_file', 'authz_default', 'authz_groupfile', 'authz_host', 'authz_user', 'dav', 'env'].each do |modname|
       it {
         is_expected.to contain_file("#{modname}.load").with(
           'path'   => "/etc/apache2/mods-available/#{modname}.load",
@@ -138,16 +128,7 @@ describe 'apache', type: :class do
     end
 
     # Assert that both load files and conf files are placed and symlinked for these mods
-    %w[
-      alias
-      autoindex
-      dav_fs
-      deflate
-      dir
-      mime
-      negotiation
-      setenvif
-    ].each do |modname|
+    ['alias', 'autoindex', 'dav_fs', 'deflate', 'dir', 'mime', 'negotiation', 'setenvif'].each do |modname|
       it {
         is_expected.to contain_file("#{modname}.load").with(
           'path'   => "/etc/apache2/mods-available/#{modname}.load",
@@ -288,33 +269,6 @@ describe 'apache', type: :class do
         )
       }
     end
-    context 'on Ubuntu 13.10' do
-      let :facts do
-        super().merge(operatingsystem: 'Ubuntu',
-                      lsbdistrelease: '13.10',
-                      operatingsystemrelease: '13.10')
-      end
-
-      it { is_expected.to contain_class('apache').with_apache_version('2.4') }
-    end
-    context 'on Ubuntu 12.04' do
-      let :facts do
-        super().merge(operatingsystem: 'Ubuntu',
-                      lsbdistrelease: '12.04',
-                      operatingsystemrelease: '12.04')
-      end
-
-      it { is_expected.to contain_class('apache').with_apache_version('2.2') }
-    end
-    context 'on Ubuntu 13.04' do
-      let :facts do
-        super().merge(operatingsystem: 'Ubuntu',
-                      lsbdistrelease: '13.04',
-                      operatingsystemrelease: '13.04')
-      end
-
-      it { is_expected.to contain_class('apache').with_apache_version('2.2') }
-    end
   end
 
   context 'on a RedHat 5 OS' do
@@ -325,7 +279,6 @@ describe 'apache', type: :class do
         osfamily: 'RedHat',
         operatingsystem: 'RedHat',
         operatingsystemrelease: '5',
-        concat_basedir: '/dne',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
         is_pe: false,
       }
@@ -379,16 +332,7 @@ describe 'apache', type: :class do
       end
 
       # Assert that load files are placed for these mods, but no conf file.
-      %w[
-        auth_basic
-        authn_file
-        authz_default
-        authz_groupfile
-        authz_host
-        authz_user
-        dav
-        env
-      ].each do |modname|
+      ['auth_basic', 'authn_file', 'authz_default', 'authz_groupfile', 'authz_host', 'authz_user', 'dav', 'env'].each do |modname|
         it {
           is_expected.to contain_file("#{modname}.load").with_path(
             "/etc/httpd/mod.d/#{modname}.load",
@@ -402,16 +346,7 @@ describe 'apache', type: :class do
       end
 
       # Assert that both load files and conf files are placed for these mods
-      %w[
-        alias
-        autoindex
-        dav_fs
-        deflate
-        dir
-        mime
-        negotiation
-        setenvif
-      ].each do |modname|
+      ['alias', 'autoindex', 'dav_fs', 'deflate', 'dir', 'mime', 'negotiation', 'setenvif'].each do |modname|
         it {
           is_expected.to contain_file("#{modname}.load").with_path(
             "/etc/httpd/mod.d/#{modname}.load",
@@ -642,14 +577,7 @@ describe 'apache', type: :class do
     end
     describe 'default mods custom' do
       let :params do
-        { default_mods: %w[
-          info
-          alias
-          mime
-          env
-          setenv
-          expires
-        ] }
+        { default_mods: ['info', 'alias', 'mime', 'env', 'setenv', 'expires'] }
       end
 
       it { is_expected.to contain_apache__mod('authz_host') }
@@ -737,7 +665,6 @@ describe 'apache', type: :class do
         osfamily: 'FreeBSD',
         operatingsystem: 'FreeBSD',
         operatingsystemrelease: '10',
-        concat_basedir: '/dne',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
         is_pe: false,
       }
@@ -774,16 +701,7 @@ describe 'apache', type: :class do
       )
     }
     # Assert that load files are placed for these mods, but no conf file.
-    %w[
-      auth_basic
-      authn_core
-      authn_file
-      authz_groupfile
-      authz_host
-      authz_user
-      dav
-      env
-    ].each do |modname|
+    ['auth_basic', 'authn_core', 'authn_file', 'authz_groupfile', 'authz_host', 'authz_user', 'dav', 'env'].each do |modname|
       it {
         is_expected.to contain_file("#{modname}.load").with(
           'path'   => "/usr/local/etc/apache24/Modules/#{modname}.load",
@@ -794,16 +712,7 @@ describe 'apache', type: :class do
     end
 
     # Assert that both load files and conf files are placed for these mods
-    %w[
-      alias
-      autoindex
-      dav_fs
-      deflate
-      dir
-      mime
-      negotiation
-      setenvif
-    ].each do |modname|
+    ['alias', 'autoindex', 'dav_fs', 'deflate', 'dir', 'mime', 'negotiation', 'setenvif'].each do |modname|
       it {
         is_expected.to contain_file("#{modname}.load").with(
           'path'   => "/usr/local/etc/apache24/Modules/#{modname}.load",
@@ -826,7 +735,6 @@ describe 'apache', type: :class do
         osfamily: 'Gentoo',
         operatingsystem: 'Gentoo',
         operatingsystemrelease: '3.16.1-gentoo',
-        concat_basedir: '/dne',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin',
         is_pe: false,
       }
@@ -870,7 +778,6 @@ describe 'apache', type: :class do
         osfamily: 'RedHat',
         operatingsystem: 'RedHat',
         operatingsystemrelease: '6',
-        concat_basedir: '/dne',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
         is_pe: false,
       }
@@ -963,7 +870,6 @@ describe 'apache', type: :class do
     let :facts do
       { osfamily: 'Darwin',
         operatingsystemrelease: '13.1.0',
-        concat_basedir: '/dne',
         is_pe: false }
     end
 

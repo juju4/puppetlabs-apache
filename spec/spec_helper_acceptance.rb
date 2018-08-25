@@ -3,7 +3,7 @@ require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 require 'beaker/puppet_install_helper'
 require 'beaker/module_install_helper'
-require 'beaker/task_helper'
+require 'beaker-task_helper'
 
 run_puppet_install_helper
 install_bolt_on(hosts) unless pe_install?
@@ -13,10 +13,6 @@ install_module_dependencies_on(hosts)
 RSpec.configure do |c|
   c.filter_run focus: true
   c.run_all_when_everything_filtered = true
-  # apache on Ubuntu 10.04 and 12.04 doesn't like IPv6 VirtualHosts, so we skip ipv6 tests on those systems
-  if fact('operatingsystem') == 'Ubuntu' && (fact('operatingsystemrelease') == '10.04' || fact('operatingsystemrelease') == '12.04')
-    c.filter_run_excluding ipv6: true
-  end
   # IPv6 is not enabled by default in the new travis-ci Trusty environment (see https://github.com/travis-ci/travis-ci/issues/8891 )
   if fact('network6_lo') != '::1'
     c.filter_run_excluding ipv6: true

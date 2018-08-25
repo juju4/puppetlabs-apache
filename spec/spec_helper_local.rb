@@ -23,14 +23,13 @@ shared_examples 'a mod class, without including apache' do
   let :facts do
     {
       id: 'root',
-      lsbdistcodename: 'squeeze',
+      lsbdistcodename: 'jessie',
       kernel: 'Linux',
       osfamily: 'Debian',
       operatingsystem: 'Debian',
-      operatingsystemrelease: '6',
+      operatingsystemrelease: '8',
       operatingsystemmajrelease: nil,
       path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-      concat_basedir: '/dne',
       is_pe: false,
       hardwaremodel: 'x86_64',
     }

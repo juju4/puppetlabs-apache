@@ -5,9 +5,8 @@ describe 'apache::params', type: :class do
     let :facts do
       {
         osfamily: 'Debian',
-        operatingsystemrelease: '6',
-        concat_basedir: '/dne',
-        lsbdistcodename: 'squeeze',
+        operatingsystemrelease: '8',
+        lsbdistcodename: 'jessie',
         operatingsystem: 'Debian',
         id: 'root',
         kernel: 'Linux',

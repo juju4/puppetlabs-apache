@@ -5,9 +5,8 @@ describe 'apache::mod::pagespeed', type: :class do
     let :facts do
       {
         osfamily: 'Debian',
-        operatingsystemrelease: '6',
-        concat_basedir: '/dne',
-        lsbdistcodename: 'squeeze',
+        operatingsystemrelease: '8',
+        lsbdistcodename: 'jessie',
         operatingsystem: 'Debian',
         id: 'root',
         kernel: 'Linux',
@@ -42,7 +41,6 @@ describe 'apache::mod::pagespeed', type: :class do
       {
         osfamily: 'RedHat',
         operatingsystemrelease: '6',
-        concat_basedir: '/dne',
         operatingsystem: 'RedHat',
         id: 'root',
         kernel: 'Linux',

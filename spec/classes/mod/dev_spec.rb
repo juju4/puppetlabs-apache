@@ -10,9 +10,9 @@ describe 'apache::mod::dev', type: :class do
   it_behaves_like 'a mod class, without including apache'
 
   [
-    %w[RedHat 6 Santiago Linux],
-    %w[Debian 6 squeeze Linux],
-    %w[FreeBSD 9 FreeBSD FreeBSD],
+    ['RedHat', '6', 'Santiago', 'Linux'],
+    ['Debian', '8', 'jessie', 'Linux'],
+    ['FreeBSD', '9', 'FreeBSD', 'FreeBSD'],
   ].each do |osfamily, operatingsystemrelease, lsbdistcodename, kernel|
     context "on a #{osfamily} OS" do
       let :facts do
@@ -22,7 +22,6 @@ describe 'apache::mod::dev', type: :class do
           operatingsystem: osfamily,
           operatingsystemrelease: operatingsystemrelease,
           is_pe: false,
-          concat_basedir: '/foo',
           id: 'root',
           path: '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
           kernel: kernel,

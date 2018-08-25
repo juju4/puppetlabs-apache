@@ -7,11 +7,10 @@ describe 'apache::mod::dav_svn', type: :class do
     context 'on a Debian OS' do
       let :facts do
         {
-          lsbdistcodename: 'squeeze',
+          lsbdistcodename: 'jessie',
           osfamily: 'Debian',
-          operatingsystemrelease: '6',
-          operatingsystemmajrelease: '6',
-          concat_basedir: '/dne',
+          operatingsystemrelease: '8',
+          operatingsystemmajrelease: '8',
           operatingsystem: 'Debian',
           id: 'root',
           kernel: 'Linux',
@@ -30,7 +29,6 @@ describe 'apache::mod::dav_svn', type: :class do
           osfamily: 'RedHat',
           operatingsystemrelease: '6',
           operatingsystemmajrelease: '6',
-          concat_basedir: '/dne',
           operatingsystem: 'RedHat',
           id: 'root',
           kernel: 'Linux',
@@ -49,7 +47,6 @@ describe 'apache::mod::dav_svn', type: :class do
           osfamily: 'FreeBSD',
           operatingsystemrelease: '9',
           operatingsystemmajrelease: '9',
-          concat_basedir: '/dne',
           operatingsystem: 'FreeBSD',
           id: 'root',
           kernel: 'Linux',
@@ -67,7 +64,6 @@ describe 'apache::mod::dav_svn', type: :class do
         {
           id: 'root',
           operatingsystemrelease: '3.16.1-gentoo',
-          concat_basedir: '/dne',
           kernel: 'Linux',
           osfamily: 'Gentoo',
           operatingsystem: 'Gentoo',

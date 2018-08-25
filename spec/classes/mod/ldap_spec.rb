@@ -6,10 +6,9 @@ describe 'apache::mod::ldap', type: :class do
   context 'on a Debian OS' do
     let :facts do
       {
-        lsbdistcodename: 'squeeze',
+        lsbdistcodename: 'jessie',
         osfamily: 'Debian',
-        operatingsystemrelease: '6',
-        concat_basedir: '/dne',
+        operatingsystemrelease: '8',
         id: 'root',
         kernel: 'Linux',
         operatingsystem: 'Debian',
@@ -61,7 +60,6 @@ describe 'apache::mod::ldap', type: :class do
       {
         osfamily: 'RedHat',
         operatingsystemrelease: '6',
-        concat_basedir: '/dne',
         id: 'root',
         kernel: 'Linux',
         operatingsystem: 'RedHat',

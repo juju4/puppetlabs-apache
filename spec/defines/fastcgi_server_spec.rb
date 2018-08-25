@@ -17,7 +17,6 @@ describe 'apache::fastcgi::server', type: :define do
           operatingsystemrelease: '6',
           kernel: 'Linux',
           id: 'root',
-          concat_basedir: '/dne',
           path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
           is_pe: false,
         }
@@ -38,11 +37,10 @@ describe 'apache::fastcgi::server', type: :define do
         {
           osfamily: 'Debian',
           operatingsystem: 'Debian',
-          operatingsystemrelease: '6',
-          lsbdistcodename: 'squeeze',
+          operatingsystemrelease: '8',
+          lsbdistcodename: 'jessie',
           kernel: 'Linux',
           id: 'root',
-          concat_basedir: '/dne',
           path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
           is_pe: false,
         }
@@ -66,7 +64,6 @@ describe 'apache::fastcgi::server', type: :define do
           operatingsystemrelease: '9',
           kernel: 'FreeBSD',
           id: 'root',
-          concat_basedir: '/dne',
           path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
           is_pe: false,
         }
@@ -88,7 +85,6 @@ describe 'apache::fastcgi::server', type: :define do
           osfamily: 'Gentoo',
           operatingsystem: 'Gentoo',
           operatingsystemrelease: '3.16.1-gentoo',
-          concat_basedir: '/dne',
           kernel: 'Linux',
           id: 'root',
           path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin',
@@ -112,11 +108,10 @@ describe 'apache::fastcgi::server', type: :define do
       {
         osfamily: 'Debian',
         operatingsystem: 'Debian',
-        operatingsystemrelease: '6',
-        lsbdistcodename: 'squeeze',
+        operatingsystemrelease: '8',
+        lsbdistcodename: 'jessie',
         kernel: 'Linux',
         id: 'root',
-        concat_basedir: '/dne',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
         is_pe: false,
       }

@@ -11,7 +11,6 @@ describe 'apache::mod::security', type: :class do
         operatingsystemrelease: '7',
         kernel: 'Linux',
         id: 'root',
-        concat_basedir: '/',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
         is_pe: false,
       }
@@ -104,9 +103,8 @@ describe 'apache::mod::security', type: :class do
       {
         osfamily: 'Debian',
         operatingsystem: 'Debian',
-        operatingsystemrelease: '6',
-        concat_basedir: '/',
-        lsbdistcodename: 'squeeze',
+        operatingsystemrelease: '8',
+        lsbdistcodename: 'jessie',
         id: 'root',
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
         kernel: 'Linux',
